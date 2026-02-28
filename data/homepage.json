@@ -1,0 +1,16 @@
+{
+    "hero": {
+        "id": 1,
+        "title": "Your one stop shop to gaming.",
+        "description": "Browse our collection of games available on platforms like Steam, PS5, Xbox, and more.",
+        "mobileImageUrl": "/images/ps5-controller-alexey-savchenko-unsplash.jpg",
+        "desktopImageUrl": "/images/ps5-controller-alexey-savchenko-unsplash.jpg",
+        "cta": {
+            "href": "#featured",
+            "external": false,
+            "ariaLabel": "Scroll to featured section",
+            "label": "View featured games",
+            "variant": "primary"
+        }
+    }
+}

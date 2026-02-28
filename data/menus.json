@@ -1,0 +1,41 @@
+{
+  "menus": [
+    {
+      "id": "header-main",
+      "name": "Main Header Menu",
+      "location": "header",
+      "menuItems": [
+        { "id": "catalog", "label": "Games Catalog", "href": "/catalog" },
+        { "id": "about", "label": "About", "href": "/about" }
+      ]
+    },
+    {
+      "id": "footer-general",
+      "name": "General",
+      "location": "footer",
+      "menuItems": [
+        { "id": "catalog", "label": "Games Catalog", "href": "/catalog" },
+        { "id": "about", "label": "About", "href": "/about" }
+      ]
+    },
+    {
+      "id": "footer-resources",
+      "name": "Resources",
+      "location": "footer",
+      "menuItems": [
+        { "id": "docs", "label": "Documentation", "href": "/docs" },
+        { "id": "faq", "label": "FAQ", "href": "/faq" },
+        { "id": "support", "label": "Support", "href": "/support" }
+      ]
+    },
+    {
+      "id": "footer-legal",
+      "name": "Legal",
+      "location": "footer",
+      "menuItems": [
+        { "id": "privacy", "label": "Privacy Policy", "href": "/privacy" },
+        { "id": "terms", "label": "Terms of Service", "href": "/terms" }
+      ]
+    }
+  ]
+}

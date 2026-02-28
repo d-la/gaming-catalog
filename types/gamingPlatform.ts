@@ -1,0 +1,1 @@
+export type GamingPlatform = "PC" | "PS5" | "XBOX"

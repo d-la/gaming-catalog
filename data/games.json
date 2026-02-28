@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "title": "Palworld",
+    "description": "An open-world survival crafting game where mysterious creatures called Pals can be fought, farmed, and put to work.",
+    "price": 29.99,
+    "category": ["Survival", "Open World", "Multiplayer"],
+    "platform": "PC",
+    "store": "Steam",
+    "storeUrl": "https://store.steampowered.com/app/1623730/",
+    "mobileImage": "https://cdn.cloudflare.steamstatic.com/steam/apps/1623730/library_600x900_2x.jpg",
+    "desktopImage": "https://cdn.cloudflare.steamstatic.com/steam/apps/1623730/library_hero.jpg"
+  },
+  {
+    "id": 2,
+    "title": "Baldur's Gate 3",
+    "description": "A story-rich RPG set in the Dungeons & Dragons universe with turn-based combat and deep character customization.",
+    "price": 59.99,
+    "category": ["RPG", "Turn-Based", "Story Rich"],
+    "platform": "PC",
+    "store": "Steam",
+    "storeUrl": "https://store.steampowered.com/app/1086940/",
+    "mobileImage": "https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/library_600x900_2x.jpg",
+    "desktopImage": "https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/library_hero.jpg"
+  },
+  {
+    "id": 3,
+    "title": "Helldivers 2",
+    "description": "A cooperative third-person shooter where players fight for democracy across hostile alien planets.",
+    "price": 39.99,
+    "category": ["Shooter", "Co-op", "Action"],
+    "platform": "PC",
+    "store": "Steam",
+    "storeUrl": "https://store.steampowered.com/app/553850/",
+    "mobileImage": "https://cdn.cloudflare.steamstatic.com/steam/apps/553850/library_600x900_2x.jpg",
+    "desktopImage": "https://cdn.cloudflare.steamstatic.com/steam/apps/553850/library_hero.jpg"
+  },
+  {
+    "id": 4,
+    "title": "Call of Duty: Modern Warfare III",
+    "description": "Fast-paced first-person shooter featuring cinematic campaigns and competitive multiplayer.",
+    "price": 69.99,
+    "category": ["FPS", "Multiplayer", "Action"],
+    "platform": "PC",
+    "store": "Steam",
+    "storeUrl": "https://store.steampowered.com/app/2519060/",
+    "mobileImage": "https://cdn.cloudflare.steamstatic.com/steam/apps/2519060/library_600x900_2x.jpg",
+    "desktopImage": "https://cdn.cloudflare.steamstatic.com/steam/apps/2519060/library_hero.jpg"
+  },
+  {
+    "id": 5,
+    "title": "EA Sports FC 24",
+    "description": "The latest football simulation experience with realistic gameplay and licensed leagues.",
+    "price": 69.99,
+    "category": ["Sports", "Simulation", "Multiplayer"],
+    "platform": "PC",
+    "store": "Steam",
+    "storeUrl": "https://store.steampowered.com/app/2195250/",
+    "mobileImage": "https://cdn.cloudflare.steamstatic.com/steam/apps/2195250/library_600x900_2x.jpg",
+    "desktopImage": "https://cdn.cloudflare.steamstatic.com/steam/apps/2195250/library_hero.jpg"
+  },
+  {
+    "id": 6,
+    "title": "Cyberpunk 2077",
+    "description": "An open-world action RPG set in Night City with deep narrative choices and futuristic combat.",
+    "price": 59.99,
+    "category": ["RPG", "Open World", "Sci-Fi"],
+    "platform": "PC",
+    "store": "Steam",
+    "storeUrl": "https://store.steampowered.com/app/1091500/",
+    "mobileImage": "https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/library_600x900_2x.jpg",
+    "desktopImage": "https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/library_hero.jpg"
+  },
+  {
+    "id": 7,
+    "title": "Red Dead Redemption 2",
+    "description": "An epic Western adventure set in a vast open world filled with story-driven missions and exploration.",
+    "price": 59.99,
+    "category": ["Open World", "Adventure", "Story Rich"],
+    "platform": "PC",
+    "store": "Steam",
+    "storeUrl": "https://store.steampowered.com/app/1174180/",
+    "mobileImage": "https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/library_600x900_2x.jpg",
+    "desktopImage": "https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/library_hero.jpg"
+  },
+  {
+    "id": 8,
+    "title": "Elden Ring",
+    "description": "A challenging action RPG set in a dark fantasy world created by FromSoftware.",
+    "price": 59.99,
+    "category": ["Souls-like", "RPG", "Fantasy"],
+    "platform": "PC",
+    "store": "Steam",
+    "storeUrl": "https://store.steampowered.com/app/1245620/",
+    "mobileImage": "https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/library_600x900_2x.jpg",
+    "desktopImage": "https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/library_hero.jpg"
+  },
+  {
+    "id": 9,
+    "title": "Lethal Company",
+    "description": "A cooperative horror experience where players scavenge abandoned industrial moons.",
+    "price": 9.99,
+    "category": ["Horror", "Co-op", "Indie"],
+    "platform": "PC",
+    "store": "Steam",
+    "storeUrl": "https://store.steampowered.com/app/1966720/",
+    "mobileImage": "https://cdn.cloudflare.steamstatic.com/steam/apps/1966720/library_600x900_2x.jpg",
+    "desktopImage": "https://cdn.cloudflare.steamstatic.com/steam/apps/1966720/library_hero.jpg"
+  },
+  {
+    "id": 10,
+    "title": "Hogwarts Legacy",
+    "description": "An open-world action RPG set in the Harry Potter universe during the 1800s.",
+    "price": 59.99,
+    "category": ["RPG", "Fantasy", "Open World"],
+    "platform": "PC",
+    "store": "Steam",
+    "storeUrl": "https://store.steampowered.com/app/990080/",
+    "mobileImage": "https://cdn.cloudflare.steamstatic.com/steam/apps/990080/library_600x900_2x.jpg",
+    "desktopImage": "https://cdn.cloudflare.steamstatic.com/steam/apps/990080/library_hero.jpg"
+  }
+]

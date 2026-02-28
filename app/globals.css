@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --app-border-color: #475569a6;
+  --background-gradient-dark: #1B2735;
+  --background-gradient-darker: #090A0F;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-app-border: var(--app-border-color);
+  --font-ruluko: var(--font-ruloko);
+  --font-dmsans: var(--font-body);
+  --color-background-gradient-dark: var(--background-graient-dark);
+  --color-background-gradient-darker: var(--background-graient-darker);
+}
+
+@layer base {
+  body {
+    font-family: var(--font-body);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+  }
+
+  h1 {
+    @apply text-3xl md:text-5xl;
+  }
+
+  h2 {
+    @apply text-2xl md:text-4xl;
+  }
+
+  h3,
+  h4,
+  h5 {
+    @apply text-xl md:text-2xl;
+  }
+}
+
+@layer components {
+  .section-container {
+    @apply relative max-w-7xl mx-auto w-full p-10;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: radial-gradient(ellipse at bottom, var(--background-gradient-dark) 0%, var(--background-gradient-darker) 100%);
+  color: var(--foreground);
+  font-family: var(--font-body);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+section {
+  scroll-margin-top: 50px;
+}
