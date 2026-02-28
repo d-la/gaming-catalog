@@ -1,4 +1,4 @@
-import type { GamingPlatform } from "@/types/GamingPlatform";
+import { GamingPlatform } from "@/types/gamingPlatform";
 
 type GamingPlatformIconsProps = {
     platform: GamingPlatform

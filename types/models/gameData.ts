@@ -1,4 +1,4 @@
-import { GamingPlatform } from "@/types/GamingPlatform"
+import { GamingPlatform } from "@/types/gamingPlatform"
 
 export type GameData = {
     id: number,
