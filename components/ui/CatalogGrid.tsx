@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { RawgGame } from "@/types/rawg/game";
-import { useSearchParams, useRouter } from "next/navigation";
+// import { useSearchParams, useRouter } from "next/navigation";
 import AnimatedWrapper from "./AnimatedWrapper";
 import { GameCard } from "./GameCard";
 
@@ -12,8 +12,8 @@ type CatalogGridProps = {
 
 export default function CatalogGrid({ games }: CatalogGridProps) {
     const [filteredGames, setFilteredGames] = useState(games);
-    const searchParams = useSearchParams();
-    const router = useRouter();
+    // const searchParams = useSearchParams();
+    // const router = useRouter();
 
     // const platformFilter = searchParams.get("platform") || ""; 
 
