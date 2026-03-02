@@ -9,9 +9,14 @@ export interface FetchConfig<TBody = unknown> {
     cache?: RequestCache;
 }
 
-export interface ApiError {
-    message: string;
+export class ApiError extends Error {
     status: number;
+
+    constructor(message: string, status: number) {
+        super(message);
+        this.name = 'ApiError';
+        this.status = status;
+    }
 }
 
 const buildUrl = (baseUrl: string, query?: Record<string, string | number | boolean | undefined>) => {
@@ -57,10 +62,10 @@ export async function sendFetch<TResponse, TBody = unknown>(
     if (!response.ok) {
         const errorMessage = await response.text();
 
-        throw {
-            message: errorMessage || "Something went wrong",
-            status: response.status
-        } as ApiError;
+        throw new ApiError(
+            errorMessage || "Something went wrong",
+            response.status
+        );
     }
 
     return response.json() as Promise<TResponse>;

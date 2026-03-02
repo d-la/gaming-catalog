@@ -18,7 +18,7 @@ export const StoreIcons = ({ stores }: StoreIconsProps) => {
     }
 
     return (
-        <div className="store-icons flex items-center gap-2.5 justify-start pb-2.5">
+        <div className="store-icons flex items-center gap-2.5 justify-start">
             {stores.length > 0 && stores.map((store) => (
                 <div key={store.id} className="empty:hidden">
                     {iconMap[store.store.slug] ?? null}

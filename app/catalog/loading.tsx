@@ -1,7 +1,7 @@
-import { CatalogGridWrapper } from "@/components/ui/CatalogGridWrapper";
-import { SlideIn } from "@/components/ui/SlideIn";
+import { SlideIn } from "@/components/ui/SlideIn"
+import CatalogSkeleton from "@/components/ui/CatalogSkeleton";
 
-export default async function CatalogPage() {
+export default function Loading() {
     return (
         <>
             <section className="section-container pb-0">
@@ -9,7 +9,7 @@ export default async function CatalogPage() {
                     <h1 className="">Games Catalog</h1>
                 </SlideIn>
             </section>
-            <CatalogGridWrapper />
+            <CatalogSkeleton />
         </>
     );
 }

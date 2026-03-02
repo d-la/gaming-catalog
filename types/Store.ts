@@ -1,9 +1,9 @@
-export interface GameStore {
+export type GameStore = {
     id: number,
     store: Store
 };
 
-export interface Store {
+export type Store = {
     id: number,
     name: string,
     slug: string,

@@ -1,13 +1,13 @@
 export type MenuLocation = "header" | "footer";
 
-export interface MenuItem {
+export type MenuItem = {
   id: string;
   label: string;
   href: string;
   openInNewTab?: boolean;
 }
 
-export interface Menu {
+export type Menu = {
   id: string;
   name: string;
   location: MenuLocation;
