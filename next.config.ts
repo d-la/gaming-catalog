@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'cdn.cloudflare.steamstatic.com',
         pathname: '/steam/apps/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'media.rawg.io',
+        pathname: '/media/games/**'
       }
     ]
   }

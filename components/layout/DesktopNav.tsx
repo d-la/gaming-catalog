@@ -8,7 +8,7 @@ interface DesktopNavProps {
 
 export const DesktopNav = ({ headerMenu, toggleSidebar }: DesktopNavProps) => {
     return (
-        <div className="flex flex-row justify-between items-center max-w-7xl mx-auto px-5">
+        <div className="flex flex-row justify-between items-center section-container py-0">
             <div className="header-navbar__logo">
                 <Link href="/" className="flex flex-row justify-start items-center basis-40">
                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
