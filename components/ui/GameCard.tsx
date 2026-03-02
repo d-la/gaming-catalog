@@ -1,6 +1,7 @@
 import { RawgGame } from "@/types/rawg/game";
 import Image from "next/image";
 import Link from "next/link";
+import { StoreIcons } from "@/components/ui/StoreIcons";
 
 type GameCardProps = {
     gameData: RawgGame
@@ -12,8 +13,7 @@ export const GameCard = ({ gameData }: GameCardProps ) => {
         slug,
         name,
         background_image,
-        platforms,
-        genres 
+        stores,
     } = gameData;
     return(
         <article className="bg-slate-900 border border-solid border-app-border rounded-lg h-full">
@@ -23,7 +23,11 @@ export const GameCard = ({ gameData }: GameCardProps ) => {
                 </div>
             )}
             <div className="game-card-content p-5">
+                <StoreIcons stores={stores} />
                 <h3>{name}</h3>
+                <Link href={`/catalog/${gameData.slug}`}>
+                    View Game
+                </Link>
             </div>
         </article>
     );

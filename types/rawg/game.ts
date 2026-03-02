@@ -1,5 +1,8 @@
 import { RawgGenre } from "./genres"
 import { RawgPlatform } from "./platforms"
+import { GameStore } from "@/types/Store"
+import { Developer } from "./developers"
+import { Publisher } from "./publishers"
 
 export type RawgGame = {
     id: number,
@@ -8,5 +11,9 @@ export type RawgGame = {
     background_image: string | null,
     platforms: RawgPlatform[],
     genres: RawgGenre[],
-    released: string
+    released: string,
+    stores: GameStore[],
+    description_raw: string,
+    developers: Developer[],
+    publishers: Publisher[]
 }
