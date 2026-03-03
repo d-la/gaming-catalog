@@ -20,7 +20,7 @@ export const SlideIn = ({ children, delay = 0 }: SlideInProps) => {
                 }
             });
         }, {
-            rootMargin: "0px 0px -50px 0px",
+            rootMargin: "0px 0px -100px 0px",
         });
 
         if (ref.current) {
