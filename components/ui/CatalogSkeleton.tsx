@@ -1,7 +1,7 @@
 export default function CatalogSkeleton() {
     return (
-        <section className="section-container catalog-grid--loading grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {Array.from({ length: 12 }).map((_, i) => (
+        <section className="section-container catalog-grid--loading grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 pt-0">
+            {Array.from({ length: 4 }).map((_, i) => (
                 <div key={i} className="rounded-lg aspect-square border border-solid border-app-border">
                     <div className="game-card-image-container aspect-video relative rounded-t-lg bg-gray-800 animate-pulse">
                     </div>

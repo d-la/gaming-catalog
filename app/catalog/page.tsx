@@ -1,5 +1,6 @@
 import { CatalogGridWrapper } from "@/components/ui/CatalogGridWrapper";
 import { SlideIn } from "@/components/ui/SlideIn";
+import { BackToTop } from "@/components/ui/BackToTop";
 
 export default async function CatalogPage() {
     return (
@@ -10,6 +11,7 @@ export default async function CatalogPage() {
                 </SlideIn>
             </section>
             <CatalogGridWrapper />
+            <BackToTop />
         </>
     );
 }
