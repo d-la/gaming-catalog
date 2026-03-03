@@ -2,6 +2,7 @@ import { CatalogHero } from "@/types/catalogHero"
 import { StoreIcons } from "../ui/StoreIcons"
 import Image from "next/image"
 import { SlideIn } from "../ui/SlideIn"
+import { joinNames } from "@/utils/joinNames"
 
 type CatalogHeroProps = {
     data: CatalogHero
@@ -9,6 +10,9 @@ type CatalogHeroProps = {
 
 export const CatalogHeroSection = ({ data }: CatalogHeroProps) => {
     const { backgroundImage, title, description, publishers, stores, developers } = data;
+
+    const publisherText = joinNames(publishers);
+    const developersText = joinNames(developers);
 
     return (
         <section className="catalog-hero section-container flex flex-col md:flex-row gap-5 md:gap-10">
@@ -34,21 +38,15 @@ export const CatalogHeroSection = ({ data }: CatalogHeroProps) => {
                 </SlideIn>
                 <SlideIn delay={5}>
                     <div className="catalog-hero-publishers">
-                        <p className="[&_span]:mr-2">
-                            <span className="mr-2">PUBLISHER(s):</span>
-                            {publishers.length > 0 && publishers.map((publisher) => (
-                                <span key={publisher.id}>{publisher.name}</span>
-                            ))}
+                        <p>
+                            PUBLISHER(s): {publisherText}
                         </p>
                     </div>
                 </SlideIn>
                 <SlideIn delay={6}>
                     <div className="catalog-hero-developers">
                         <p>
-                        <span className="mr-2">DEVELOPERS:</span>
-                            {developers.length > 0 && developers.map((developer) => (
-                                <span key={developer.id}>{developer.name}</span>
-                            ))}
+                            DEVELOPERS: {developersText}
                         </p>
                     </div>
                 </SlideIn>

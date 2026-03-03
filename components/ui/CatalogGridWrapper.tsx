@@ -47,10 +47,12 @@ export const CatalogGridWrapper = () => {
 
         const observer = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting && !isLoading) {
-                console.log('found & is not loading');
                 setPage((prev) => prev + 1);
             }
-        }, {rootMargin: "0px 0px -100px 0px"});
+        },
+        {
+            rootMargin: "0px 0px 400px 0px", threshold: 0
+        });
 
         observer.observe(observerRef.current);
 
