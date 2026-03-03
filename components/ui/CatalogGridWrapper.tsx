@@ -69,10 +69,8 @@ export const CatalogGridWrapper = () => {
     return (
         <>
             <CatalogGrid games={games} />
-
             {isLoading && <CatalogSkeleton />}
-
-            <div className="observer w-full h-2" ref={observerRef}></div>
+            <div className="observer w-full h-64" ref={observerRef}></div>
         </>
     )
 

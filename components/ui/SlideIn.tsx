@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState, ReactNode } from "react";
+import { useEffect, useState, ReactNode } from "react";
 
 type SlideInProps = {
     children: ReactNode
@@ -8,33 +8,17 @@ type SlideInProps = {
 }
 
 export const SlideIn = ({ children, delay = 0 }: SlideInProps) => {
-    const ref = useRef<HTMLDivElement>(null);
-    const [isVisible, setIsVisible] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, {
-            rootMargin: "0px 0px 150px 0px",
-            threshold: 0
-        });
+        const animationId = requestAnimationFrame(() => setIsMounted(true));
 
-        if (ref.current) {
-            observer.observe(ref.current);
-        }
-
-        return () => observer.disconnect();
+        return () => cancelAnimationFrame(animationId);
     }, []);
 
     return (
-        <div 
-            ref={ref} 
-            className={`slide-in relative w-full h-full transition-all duration-300 ease-in-out ${!isVisible ? "-translate-y-5 opacity-0" : "translate-y-0 opacity-100"}`}
+        <div
+            className={`slide-in relative w-full h-full transition-transform duration-300 ease-in-out ${isMounted ? "translate-y-0 opacity-100" : "-translate-y-5 opacity-0"}`}
             style={{ transitionDelay: `${delay * 120}ms` }}
         >
             {children}
