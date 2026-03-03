@@ -21,6 +21,7 @@ export const SlideIn = ({ children, delay = 0 }: SlideInProps) => {
             });
         }, {
             rootMargin: "0px 0px -100px 0px",
+            threshold: .1
         });
 
         if (ref.current) {
@@ -34,7 +35,7 @@ export const SlideIn = ({ children, delay = 0 }: SlideInProps) => {
         <div 
             ref={ref} 
             className={`slide-in relative w-full h-full transition-all duration-300 ease-in-out ${!isVisible ? "-translate-y-5 opacity-0" : "translate-y-0 opacity-100"}`}
-            style={{ transitionDelay: `${delay * 250}ms` }}
+            style={{ transitionDelay: `${delay * 150}ms` }}
         >
             {children}
         </div>

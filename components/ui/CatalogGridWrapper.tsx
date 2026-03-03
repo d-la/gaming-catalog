@@ -50,7 +50,7 @@ export const CatalogGridWrapper = () => {
                 console.log('found & is not loading');
                 setPage((prev) => prev + 1);
             }
-        }, {rootMargin: "0px -100px 0px 0px"});
+        }, {rootMargin: "0px 0px -100px 0px"});
 
         observer.observe(observerRef.current);
 
