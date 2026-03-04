@@ -51,7 +51,7 @@
 
 @layer components {
   .section-container {
-    @apply relative max-w-7xl mx-auto w-full pt-10;
+    @apply relative max-w-7xl mx-auto w-full pt-10 px-5 lg:px-10;
   }
 
   .button-primary {

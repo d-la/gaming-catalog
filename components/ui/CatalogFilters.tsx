@@ -40,7 +40,7 @@ export const CatalogFilters = ({ onStoreChange }: CatalogFiltersProps) => {
     return (
         <section className="section-container">
             <h2 className="pb-2">Filters:</h2>
-            <div className="flex flex-col md:flex-row gap-2.5">
+            <div className="flex flex-row flex-wrap gap-2.5">
                 {stores.map((store) => (
                     <button 
                         key={store.id} 
