@@ -14,6 +14,8 @@
   --color-app-border: var(--app-border-color);
   --font-ruluko: var(--font-ruloko);
   --font-dmsans: var(--font-body);
+  --font-heading: var(--font-ruluko);
+  --font-body: var(--font-dmsans);
   --color-background-gradient-dark: var(--background-graient-dark);
   --color-background-gradient-darker: var(--background-graient-darker);
 }
@@ -49,7 +51,27 @@
 
 @layer components {
   .section-container {
-    @apply relative max-w-7xl mx-auto w-full p-10;
+    @apply relative max-w-7xl mx-auto w-full pt-10;
+  }
+
+  .button-primary {
+    @apply bg-slate-400 p-2.5 text-center text-slate-950 inline-block w-fit rounded-lg transition-colors duration-300 hover:bg-slate-300 focus:bg-slate-300 focus-within:bg-slate-300 ease-in-out text-base;
+  }
+
+  .button-secondary {
+    @apply bg-slate-950 text-white hover:bg-slate-800 focus:bg-slate-800 focus-within:bg-slate-800 rounded-lg transition-colors duration-300 ease-in-out text-base;
+  }
+
+  .button-text-only {
+    @apply text-white text-base hover:underline transition-transform duration-300 ease-in-out cursor-pointer hover:underline-offset-2;
+  }
+
+  .button-outline {
+    @apply w-fit text-base border border-solid border-white text-white p-2.5 rounded-lg transition-colors duration-300 ease-in-out hover:bg-white focus:bg-white focus-within:bg-white hover:text-slate-900 focus:text-slate-900 focus-within:text-slate-900;
+  }
+
+  .button-outline--active {
+    @apply bg-white text-slate-950;
   }
 }
 

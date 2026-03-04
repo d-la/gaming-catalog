@@ -7,14 +7,14 @@ import { Footer } from "@/components/layout/Footer";
 import { getHeaderMenu } from "@/lib/menus";
 
 const dmSans = DM_Sans({
-  variable: "--font-body",
+  variable: "--font-dmSans",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   display: "swap"
 });
 
 const ruluko = Ruluko({
-  variable: "--font-heading",
+  variable: "--font-ruluko",
   subsets: ["latin"],
   weight: ["400"],
   display: "swap"

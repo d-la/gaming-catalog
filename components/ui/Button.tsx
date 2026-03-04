@@ -6,13 +6,15 @@ type ButtonProps = {
 };
 
 const variantClasses: Record<CTA["variant"], string> = {
-    primary: "bg-gray-950 text-white hover:bg-gray-900 focus:bg-gray-900 focus-within:bg-gray-900",
-    secondary: "bg-mist-900 text-white hover:bg-mist-700 focus:bg-mist-700 focus-within:bg-mist-700"
+    primary: "button-primary",
+    secondary: "button-secondary",
+    outline: "button-outline",
+    "text-only": "button-text-only"
 }
 
 export const Button = ({ cta }: ButtonProps) => {
 
-    const baseClasses = "inline-block flex items-center justify-center px-5 py-3 rounded-md transition-colors duration-300 ease-in-out font-heading font-bold uppercase"
+    const baseClasses = "inline-block flex items-center justify-center px-5 py-3"
     const classes = `${baseClasses} ${variantClasses[cta.variant]}`;
 
     if (cta.external) {

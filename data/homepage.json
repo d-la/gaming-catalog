@@ -10,7 +10,7 @@
             "external": false,
             "ariaLabel": "Scroll to featured section",
             "label": "View featured games",
-            "variant": "primary"
+            "variant": "outline"
         }
     }
 }
