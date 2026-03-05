@@ -7,11 +7,14 @@ import CatalogSkeleton from "./CatalogSkeleton";
 import { CatalogFilters } from "./CatalogFilters";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { getStaticStoreId } from "@/utils/getStaticStoreId";
 
 export const CatalogGridWrapper = () => {
     const [games, setGames] = useState<RawgGame[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
+    const currentPage = useRef(0);
+    const currentStores = useRef('');
     
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -22,23 +25,41 @@ export const CatalogGridWrapper = () => {
         setIsLoading(true);
 
         const page = searchParams.get("page") ?? 1;
-        const stores = searchParams.get("stores") ?? "";
+        const stores = searchParams.get("stores") ?? '';
 
-        const apiParams = new URLSearchParams();
-
-        if (page) apiParams.append("page", page.toString());
-        if (stores) apiParams.append("stores", stores);
-
-        const res = await fetch(`/api/rawg/games?${apiParams.toString()}`);
-        const data = await res.json();
-
-        if (page == 1) {
-            setGames(data.results);
-        } else {
-            setGames((prev) => [...prev, ...data.results]);
+        // If the user has filtered, change our ref so we can load new games properly
+        if (currentStores.current !== stores) {
+            currentPage.current = 0;
+            currentStores.current = stores;
         }
 
-        setHasMore(Boolean(data.next));
+        // Conditional to prevent fetching the same page multiple times
+        if (Number(page) > Number(currentPage.current)) {
+
+            const apiParams = new URLSearchParams();
+
+            if (page) apiParams.append("page", page.toString());
+            if (stores) {
+                // The API accepts stores as a number not a slug. Convert our slug to the correct ID
+                const storeId = getStaticStoreId(stores);
+                apiParams.append("stores", storeId.toString());
+            }
+
+            const res = await fetch(`/api/rawg/games?${apiParams.toString()}`);
+            const data = await res.json();
+
+            if (page == 1) {
+                setGames(data.results);
+            } else {
+                setGames((prev) => [...prev, ...data.results]);
+            }
+
+            setHasMore(Boolean(data.next));
+
+            // Set our ref to the current page so we can continue infinite loading as needed
+            currentPage.current = Number(page);
+        }
+
         setIsLoading(false);
     }, [searchParams]);
 
@@ -69,19 +90,9 @@ export const CatalogGridWrapper = () => {
         return () => observer.disconnect();
     }, [hasMore, isLoading, router, searchParams]);
 
-    // Handle adding filters, value === -1 means the catalog grid should show all games
-    const handleFilterChange = (value: string) => {
-
-        if (value !== "-1") {
-            router.push(`?page=1&stores=${value}`);
-        } else {
-            router.push('');
-        }
-    };
-
     return (
         <>
-            <CatalogFilters onStoreChange={handleFilterChange} />
+            <CatalogFilters />
             <CatalogGrid games={games} />
             {isLoading && <CatalogSkeleton />}
             <div className="observer w-full h-64" ref={observerRef}></div>
