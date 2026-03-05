@@ -7,7 +7,7 @@ import CatalogSkeleton from "./CatalogSkeleton";
 import { CatalogFilters } from "./CatalogFilters";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { getStaticStoreId } from "@/utils/getStaticStoreId";
+import { fetchGames } from "@/lib/fetchGames";
 
 export const CatalogGridWrapper = () => {
     const [games, setGames] = useState<RawgGame[]>([]);
@@ -20,6 +20,21 @@ export const CatalogGridWrapper = () => {
     const searchParams = useSearchParams();
 
     const observerRef = useRef<HTMLDivElement | null>(null);
+
+    const loadGamesUpToPage = async (targetPage: number, stores: string) => {
+        const allGames = [];
+        let next: string | undefined | null = undefined;
+
+        for (let p = 1; p <= targetPage; p++) {
+            const data = await fetchGames(p.toString(), stores);
+            allGames.push(...data.results);
+            next = data.next;
+        }
+
+        setGames(allGames);
+
+        return next;
+    }
 
     const getGames = useCallback(async () => {
         setIsLoading(true);
@@ -36,25 +51,10 @@ export const CatalogGridWrapper = () => {
         // Conditional to prevent fetching the same page multiple times
         if (Number(page) > Number(currentPage.current)) {
 
-            const apiParams = new URLSearchParams();
+            // Load all games up to the current page from the query string
+            const data = await loadGamesUpToPage(Number(page), stores);
 
-            if (page) apiParams.append("page", page.toString());
-            if (stores) {
-                // The API accepts stores as a number not a slug. Convert our slug to the correct ID
-                const storeId = getStaticStoreId(stores);
-                apiParams.append("stores", storeId.toString());
-            }
-
-            const res = await fetch(`/api/rawg/games?${apiParams.toString()}`);
-            const data = await res.json();
-
-            if (page == 1) {
-                setGames(data.results);
-            } else {
-                setGames((prev) => [...prev, ...data.results]);
-            }
-
-            setHasMore(Boolean(data.next));
+            setHasMore(Boolean(data));
 
             // Set our ref to the current page so we can continue infinite loading as needed
             currentPage.current = Number(page);
