@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import CatalogGrid from "./CatalogGrid";
 import { RawgGame } from "@/types/rawg/game";
-import CatalogSkeleton from "./CatalogSkeleton";
+import CatalogSkeleton from "../skeletons/CatalogSkeleton";
 import { CatalogFilters } from "./CatalogFilters";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";

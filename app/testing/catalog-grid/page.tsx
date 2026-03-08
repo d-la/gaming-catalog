@@ -1,5 +1,6 @@
 // app/testing/catalog-grid/page.tsx
 import { CatalogGridWrapper } from "@/components/ui/CatalogGridWrapper";
+import { Suspense } from "react";
 
 export default function CatalogGridTestPage() {
   return (
@@ -9,7 +10,9 @@ export default function CatalogGridTestPage() {
         This page is used by Playwright tests to verify that the catalog grid
         loads data correctly and handles infinite scroll without duplicates.
       </p>
-      <CatalogGridWrapper />
+      <Suspense>
+        <CatalogGridWrapper />
+      </Suspense>
     </main>
   );
 }
