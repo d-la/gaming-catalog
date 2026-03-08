@@ -10,13 +10,13 @@ export default function CatalogGrid({ games }: CatalogGridProps) {
 
     return (
         <>
-            <div className="catalog-grid grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 section-container">
+            <section className="section-container catalog-grid grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {games.map((game, key) => (
-                    <SlideIn key={game.id} delay={key * 0.1}>
+                    <SlideIn key={game.slug} delay={key * 0.1}>
                         <GameCard gameData={game} />
                     </SlideIn>
                 ))}
-            </div>
+            </section>
         </>
     );
 };

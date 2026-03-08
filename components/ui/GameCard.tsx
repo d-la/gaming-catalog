@@ -24,7 +24,7 @@ export const GameCard = ({ gameData }: GameCardProps ) => {
             <div className="game-card-content p-5 h-full flex flex-col gap-2.5">
                 <StoreIcons stores={stores} />
                 <h3>{name}</h3>
-                <Link className="mt-auto bg-slate-400 p-2.5 text-center text-slate-950 inline-block w-fit rounded-lg transition-all duration-300 hover:bg-slate-300 focus:bg-slate-300 focus-within:bg-slate-300" href={`/catalog/${slug}`}>
+                <Link className="mt-auto button-outline" href={`/catalog/${slug}`} aria-label={`View details for ${name}`}>
                     View Game
                 </Link>
             </div>

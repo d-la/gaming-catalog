@@ -4,7 +4,7 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
 
     const page = searchParams.get("page") ?? "1";
-    const platform = searchParams.get("platform");
+    const stores = searchParams.get("stores");
     const tags = searchParams.get("tags");
 
     const query = new URLSearchParams({
@@ -12,13 +12,13 @@ export async function GET(req: NextRequest) {
         page
     });
 
-    if (platform) query.append("platforms", platform);
+    if (stores) query.append("stores", stores);
     if (tags) query.append("tags", tags);
 
     const res = await fetch(`https://api.rawg.io/api/games?${query.toString()}`);
 
     if (!res.ok) {
-        return new Response("Failed to feetch games", { status: 500 });
+        return new Response("Failed to fetch games", { status: 500 });
     }
 
     const data = await res.json();

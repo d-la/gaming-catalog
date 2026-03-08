@@ -1,12 +1,12 @@
-import { getGames } from "@/lib/getGames";
-import { FeaturedSlider } from "@/components/ui/FeaturedSlider/FeaturedSlider";
+import { getStaticHomepageGames } from "@/lib/getStaticHomepageGames";
+import { FeaturedSlider } from "@/components/ui/FeaturedSlider";
 import { GameData } from "@/types/models/gameData";
 import { getHomepageHero } from "@/lib/getHomepageHero";
 import { Hero } from "@/types/models/hero";
 import { HeroSection } from "@/components/ui/Hero";
 
 export default async function Home() {
-  const games: GameData[] = await getGames();
+  const games: GameData[] = await getStaticHomepageGames();
   const heroData: Hero = await getHomepageHero();
 
   return (

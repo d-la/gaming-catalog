@@ -16,6 +16,12 @@ export const GlobalScripts = () => {
         };
 
         document.addEventListener("click", handleSmoothScrollClick);
+
+        const setHistoryScrollRestoration = (): void => {
+            history.scrollRestoration = "manual";
+        };
+
+        setHistoryScrollRestoration();
     }, []);
 
     return null;

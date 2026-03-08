@@ -14,14 +14,15 @@ export const StoreIcons = ({ stores }: StoreIconsProps) => {
         steam: <SteamIcon />,
         "playstation-store": <Ps5Icon />,
         "xbox-store": <XboxIcon />,
+        "marketplace.xbox.com": <XboxIcon />,
         nintendo: <NintendoIcon />
     }
 
     return (
         <div className="store-icons flex items-center gap-2.5 justify-start">
-            {stores.length > 0 && stores.map((store) => (
-                <div key={store.id} className="empty:hidden">
-                    {iconMap[store.store.slug] ?? null}
+            {stores.length > 0 && stores.map((storeData) => (
+                <div key={storeData.store.slug} className="empty:hidden">
+                    {iconMap[storeData.store.slug] ?? null}
                 </div>
             ))}
         </div>

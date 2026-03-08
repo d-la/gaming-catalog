@@ -1,5 +1,5 @@
 import { SlideIn } from "@/components/ui/SlideIn"
-import CatalogSkeleton from "@/components/ui/CatalogSkeleton";
+import CatalogSkeleton from "@/components/skeletons/CatalogSkeleton";
 
 export default function Loading() {
     return (

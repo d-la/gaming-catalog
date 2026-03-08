@@ -9,7 +9,7 @@ interface MobileSidebarNavProps {
 export const MobileSidebarNav = ({ headerMenu, isOpen, onClose }: MobileSidebarNavProps) => {
 
     return (
-        <aside className={`mobile-sidebar-nav absolute block md:hidden dark:bg-slate-900 transition-all duration-300 ease-in-out h-screen top-[81px] min-w-7/10 ${isOpen ? "left-0 z-10" : "-left-full"}`}>
+        <aside className={`mobile-sidebar-nav absolute block md:hidden dark:bg-slate-900 transition-all duration-300 ease-in-out h-screen top-[81px] min-w-7/10 ${isOpen ? "left-0 z-10" : "-left-full -z-1"}`}>
             <div className="mobile-sidebar-header w-full p-5 flex justify-end">
                 <button type="button" aria-label="Close sidebar navigation" onClick={onClose}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
