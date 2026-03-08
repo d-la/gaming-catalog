@@ -1,5 +1,5 @@
 import { getStaticHomepageGames } from "@/lib/getStaticHomepageGames";
-import { FeaturedSlider } from "@/components/ui/FeaturedSlider/FeaturedSlider";
+import { FeaturedSlider } from "@/components/ui/FeaturedSlider";
 import { GameData } from "@/types/models/gameData";
 import { getHomepageHero } from "@/lib/getHomepageHero";
 import { Hero } from "@/types/models/hero";

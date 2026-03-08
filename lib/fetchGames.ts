@@ -12,6 +12,12 @@ export const fetchGames = async (page: string, stores: string): Promise<RawgResp
     }
 
     const res = await fetch(`/api/rawg/games?${apiParams.toString()}`);
+
+    if (!res.ok) {
+        console.error(res);
+        throw new Error(`Failed to fetch games: ${res.status}`);
+    }
+
     const data = await res.json();
 
     return data;

@@ -8,11 +8,13 @@ import { CatalogFilters } from "./CatalogFilters";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { fetchGames } from "@/lib/fetchGames";
+import Link from "next/link";
 
 export const CatalogGridWrapper = () => {
     const [games, setGames] = useState<RawgGame[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [hasMore, setHasMore] = useState<boolean>(true);
     const currentPage = useRef(0);
     const currentStores = useRef('');
     
@@ -50,14 +52,18 @@ export const CatalogGridWrapper = () => {
 
         // Conditional to prevent fetching the same page multiple times
         if (Number(page) > Number(currentPage.current)) {
+            try {
+                // Load all games up to the current page from the query string
+                const data = await loadGamesUpToPage(Number(page), stores);
 
-            // Load all games up to the current page from the query string
-            const data = await loadGamesUpToPage(Number(page), stores);
+                setHasMore(Boolean(data));
 
-            setHasMore(Boolean(data));
-
-            // Set our ref to the current page so we can continue infinite loading as needed
-            currentPage.current = Number(page);
+                // Set our ref to the current page so we can continue infinite loading as needed
+                currentPage.current = Number(page);
+            } catch (error) {
+                console.error(error);
+                setError(error instanceof Error ? error.message : "Sorry - something went wrong.");
+            }
         }
 
         setIsLoading(false);
@@ -89,6 +95,15 @@ export const CatalogGridWrapper = () => {
 
         return () => observer.disconnect();
     }, [hasMore, isLoading, router, searchParams]);
+
+    if (error) {
+        return (
+            <section className="section-container">
+                <h2 className="mb-2.5">Looks like something went wrong...</h2>
+                <Link href="/catalog" className="button-outline">Refresh the page</Link>
+            </section>
+        );
+    }
 
     return (
         <>

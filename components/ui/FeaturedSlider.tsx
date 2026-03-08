@@ -2,7 +2,7 @@
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, A11y, Autoplay } from 'swiper/modules';
-import { FeaturedGameCard } from "../FeaturedGameCard";
+import { FeaturedGameCard } from "./FeaturedGameCard";
 import { GameData } from "@/types/models/gameData";
 
 import 'swiper/css';
