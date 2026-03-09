@@ -1,6 +1,28 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 export const BackToTop = () => {
+    const [isVisible, setIsVisible] = useState<boolean>(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const shouldShow = window.scrollY > 300;
+
+            setIsVisible(prev => {
+                if (prev === shouldShow) return prev;
+
+                return shouldShow;
+            });
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+
+        handleScroll();
+
+        return () => window.removeEventListener("scroll", handleScroll);
+    });
+
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
@@ -19,7 +41,7 @@ export const BackToTop = () => {
 
     return (
         <button 
-            className="fixed bottom-20 right-5 xl:bottom-20 xl:right-20 z-100 size-8 flex justify-center items-center rounded-full cursor-pointer transition-all duration-300 bg-slate-400 hover:bg-slate-300 focus:bg-slate-300 focus-within:bg-slate-300" 
+            className={`fixed bottom-20 right-5 xl:bottom-20 xl:right-20 z-100 size-8 flex justify-center items-center rounded-full cursor-pointer transition-all duration-300 bg-slate-400 hover:bg-slate-300 focus:bg-slate-300 focus-within:bg-slate-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`} 
             aria-label="Scroll to the top of the page"
             onClick={handleClick}
         >
