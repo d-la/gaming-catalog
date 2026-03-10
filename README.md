@@ -15,7 +15,7 @@ A modern game discovery app built with Next.js that lets users browse and explor
         - Example:
             - `/components/ui/GameCard.tsx` is a server component which recieves game data as props and renders the game card markup entirely on the server. This helps with initial load performance and search engine visibility.
             - `/components/ui/CatalogGridWrapper.tsx` is a client component and handles interactive functionality such as reading and reacting to URL query parameters (`page` and `stores` currently), fetches data from the RAWG API and filters on URL query parameter changes, and implements an infinite scroll using the `IntersectionObserver` API and updates the query string with `useRouter`
-    - Reusable UI components (e.g. back to top button, game card, store icons, slide in animation wrapper, )
+    - Reusable UI components (e.g. back to top button, game card, store icons, slide in animation wrapper)
 
 - **API integration**:
     - Integration with the **RAWG** public games API
@@ -55,7 +55,7 @@ I’m actively studying and plan to continue building this app. Some of the new 
 1. **Clone the repo**
     
     ```bash
-    git clone https://github.com/your-username/gaming-catalog.git
+    git clone https://github.com/d-la/gaming-catalog.git
     cd gaming-catalog
     ```
 
