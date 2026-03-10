@@ -32,12 +32,17 @@ A modern game discovery app built with Next.js that lets users browse and explor
 
 I’m actively studying and plan to continue building this app. Some of the new features in my roadmap are:
 
+- **General**
+    - Expansion on the game detail page
+    - Homepage to use data directly from the RAWG API to feature games - currently the homepage is using static game information from a local json file
+    - Expansion on homepage
+
 - **User experience improvements**
     - Set a maximum amount of times the user can infinite load before displaying a "load more" button, allowing the user to see the footer
 
 - **Search & filters**  
     - Search by game title
-    - Additional filter to the existing Store filter
+    - Additional filters (possibly popular tags or ratings) to the existing Store filter
     - Sorting 
 
 - **User features**  
