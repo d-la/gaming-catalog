@@ -2,7 +2,7 @@
 
 A modern game discovery app built with Next.js that lets users browse and explore video games using live data from the RAWG API.
 
-- **Live site**: `https://gaming-catalog.vercel.app/`
+- **Live site**: [https://gaming-catalog.vercel.app/](https://gaming-catalog.vercel.app/)
 - **Tech stack**: Next.js (App Router), TypeScript, React, Tailwind CSS, RAWG API, Vercel
 
 ---
