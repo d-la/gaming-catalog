@@ -20,6 +20,21 @@
   --color-background-gradient-darker: var(--background-graient-darker);
 }
 
+@safelist {
+  hover:fill-pink-300;
+  hover:stroke-pink-300;
+  focus:fill-pink-300;
+  focus:stroke-pink-300;
+  focus-within:fill-pink-300;
+  focus-within:stroke-pink-300;
+  group-hover:fill-pink-300;
+  group-hover:stroke-pink-300;
+  group-focus:fill-pink-300;
+  group-focus:stroke-pink-300;
+  group-focus-within:fill-pink-300;
+  group-focus-within:stroke-pink-300;
+}
+
 @layer base {
   body {
     font-family: var(--font-body);
