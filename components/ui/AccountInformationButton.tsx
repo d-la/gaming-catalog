@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { signOut } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 type AccountInformationProps = {
     username: string
@@ -11,6 +11,21 @@ type AccountInformationProps = {
 export const AccountInformationButton = ({ username }: AccountInformationProps) => {
 
     const [accountOptionsVisible, setAccountOptionsVisible] = useState<boolean>(false);
+
+    // Hide account popup when clicking on something other than popup
+    useEffect(() => {
+        const handleClick = (e: MouseEvent) => {
+            if (!(e.target as Element).closest('.account-settings') && accountOptionsVisible) {
+                setAccountOptionsVisible(false);
+            }
+        };
+
+        document.addEventListener('click', handleClick);
+
+        return () => {
+            document.removeEventListener('click', handleClick);
+        };
+    }, [accountOptionsVisible]);
 
     const toggleAccountOptions = (e: React.MouseEvent<HTMLButtonElement>) => {
         setAccountOptionsVisible(prev => !prev);
@@ -27,8 +42,8 @@ export const AccountInformationButton = ({ username }: AccountInformationProps) 
             >
                 <span>{username?.charAt(0) || "U"}</span>
             </button>
-            <div className={`account-settings absolute top-8 min-w-fit bg-slate-900 rounded-lg border border-solid border-app-border pt-8 p-5 transition-transform druation-300 ${!accountOptionsVisible ? "-z-1 opacity-0" : "z-10 opacity-100"}`}>
-                <button 
+            <div className={`account-settings absolute top-8 right-0 min-w-fit bg-slate-900 rounded-lg border border-solid border-app-border pt-8 p-5 transition-transform druation-300 ${!accountOptionsVisible ? "-z-1 opacity-0" : "z-10 opacity-100"}`}>
+                <button
                     type="button"
                     aria-label="Close account options popup"
                     title="Close account options popup"
@@ -55,10 +70,10 @@ export const AccountInformationButton = ({ username }: AccountInformationProps) 
                         </Link>
                     </li>
                     <li>
-                        <button 
-                            type="button" 
-                            title="Log out of your account" 
-                            aria-label="Log out of your account" 
+                        <button
+                            type="button"
+                            title="Log out of your account"
+                            aria-label="Log out of your account"
                             className="flex flex-row gap-2 cursor-pointer"
                             onClick={() => signOut({ callbackUrl: "/login" })}
                         >
