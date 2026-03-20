@@ -9,6 +9,7 @@ export const LoginForm = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
+    const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
     const router = useRouter();
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +22,10 @@ export const LoginForm = () => {
     const onSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
 
-        setError("");
+        setIsSubmitted(true);
+
+        // Simulate an API call to show loading state
+        await new Promise((res) => setTimeout(res, 1000));
 
         const result = await signIn("credentials", {
             email,
@@ -31,8 +35,12 @@ export const LoginForm = () => {
 
         if (result?.error) {
             setError("Invalid email or password.");
+            setIsSubmitted(false);
             return;
         }
+
+        setError("");
+        setIsSubmitted(false);
 
         router.push(`/account-information`);
     }
@@ -53,15 +61,22 @@ export const LoginForm = () => {
             <form className=" flex flex-col gap-4" onSubmit={onSubmit}>
                 <div className="form-group">
                     <label htmlFor="login-email" className="pb-2 block">Email</label>
-                    <input id="login-email" type="text" placeholder="your@email.com" value={email} className="border border-app-border border-solid w-full px-2.5 py-2 text-white rounded-lg leading-none bg-gray-950" onChange={onChange} />
+                    <input id="login-email" type="text" placeholder="your@email.com" value={email} className="border border-app-border border-solid w-full px-2.5 py-2 text-white rounded-lg leading-none bg-gray-950" onChange={onChange} required/>
                     <span className="text-xs text-white">Use test@test.com to access pages that require authentication</span>
                 </div>
                 <div className="form-group">
                     <label htmlFor="login-password" className="pb-2 block">Password</label>
-                    <input id="login-password" type="password" placeholder="••••••" value={password} className="border border-app-border border-solid w-full px-2.5 py-2 text-white rounded-lg leading-none bg-gray-950" onChange={onChange} />
+                    <input id="login-password" type="password" placeholder="••••••" value={password} className="border border-app-border border-solid w-full px-2.5 py-2 text-white rounded-lg leading-none bg-gray-950" onChange={onChange} required/>
                     <span className="text-xs text-white">Use <code>password</code> as the password to log in</span>
                 </div>
-                <button type="submit" className="button-tertiary w-full cursor-pointer">Sign In</button>
+                <button type="submit" className="button-tertiary w-full cursor-pointer flex flex-row gap-2.5 justify-center" disabled={isSubmitted} aria-disabled={isSubmitted}>
+                    {isSubmitted &&
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6 animate-spin [animation-duration:2s]">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                        </svg>
+                    }
+                    <span>Sign In</span>
+                </button>
             </form>
         </section>
     );

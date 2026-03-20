@@ -42,7 +42,7 @@ export const AccountInformationButton = ({ username }: AccountInformationProps) 
             >
                 <span>{username?.charAt(0) || "U"}</span>
             </button>
-            <div className={`account-settings absolute top-8 right-0 min-w-fit bg-slate-900 rounded-lg border border-solid border-app-border pt-8 p-5 transition-transform druation-300 ${!accountOptionsVisible ? "-z-1 opacity-0" : "z-10 opacity-100"}`}>
+            <div className={`account-settings absolute top-8 right-0 min-w-fit bg-slate-900 rounded-lg border border-solid border-app-border pt-10 p-5 transition-transform druation-300 ${!accountOptionsVisible ? "-z-1 opacity-0" : "z-10 opacity-100"}`}>
                 <button
                     type="button"
                     aria-label="Close account options popup"
