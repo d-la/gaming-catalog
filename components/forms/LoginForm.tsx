@@ -7,8 +7,6 @@ import { signIn } from "next-auth/react";
 import { validateEmail, validatePassword } from "@/lib/formValidations";
 
 export const LoginForm = () => {
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
     const [fieldErrors, setFieldErrors] = useState<{
@@ -22,27 +20,25 @@ export const LoginForm = () => {
         email: false,
         password: false,
     });
+    const [form, setForm] = useState({ email: "", password: "" });
+    const validators = {
+        email: validateEmail,
+        password: validatePassword
+    } as const;
+
     const router = useRouter();
 
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { id, value } = e.target;
+    type FieldName = keyof typeof validators;
 
-        if (id === "login-email") setEmail(value);
-        if (id === "login-password") setPassword(value);
-    };
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target as HTMLInputElement & { name: FieldName };
+        setForm((prev) => ({ ...prev, [name]: value }));
+    }
 
     const onBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-        const { id, value } = e.target;
-
-        if (id === "login-email") {
-            setTouched((prev) => ({...prev, email: true}));
-            setFieldErrors((prev) => ({ ...prev, email: validateEmail(value)}));
-        }
-
-        if (id === "login-password") {
-            setTouched((prev) => ({...prev, password: true}));
-            setFieldErrors((prev) => ({...prev, password: validatePassword(value)}));
-        }
+        const { name, value } = e.target as HTMLInputElement & { name: FieldName };
+        setTouched((prev) => ({ ...prev, [name]: true }));
+        setFieldErrors((prev) => ({ ...prev, [name]: validators[name](value) }));
     }
 
     const onSubmit = async (e: React.SubmitEvent) => {
@@ -52,6 +48,8 @@ export const LoginForm = () => {
 
         // Simulate an API call to show loading state
         await new Promise((res) => setTimeout(res, 1000));
+
+        const { email, password } = form;
 
         const result = await signIn("credentials", {
             email,
@@ -105,10 +103,11 @@ export const LoginForm = () => {
                         id="login-email"
                         type="text"
                         placeholder="your@email.com"
-                        value={email}
+                        value={form.email}
                         className={`border border-solid w-full px-2.5 py-2 text-white rounded-lg leading-none bg-gray-950 transition-colors duration-300 ${fieldErrors.email ? "border-red-500" : "border-app-border"}`}
                         onChange={onChange}
                         onBlur={onBlur}
+                        name="email"
                         required
                     />
                     {fieldErrors.email && touched.email && (
@@ -125,10 +124,11 @@ export const LoginForm = () => {
                         id="login-password"
                         type="password"
                         placeholder="••••••"
-                        value={password}
+                        value={form.password}
                         className={`border border-solid w-full px-2.5 py-2 text-white rounded-lg leading-none bg-gray-950 transition-colors duration-300 ${fieldErrors.password ? "border-red-500" : "border-app-border"}`}
                         onChange={onChange}
                         onBlur={onBlur}
+                        name="password"
                         required
                     />
                     {fieldErrors.password && touched.password && (
