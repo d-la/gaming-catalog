@@ -5,6 +5,7 @@ import { Header } from "@/components/layout/Header";
 import { GlobalScripts } from "@/components/GlobalScripts";
 import { Footer } from "@/components/layout/Footer";
 import { getHeaderMenu } from "@/lib/menus";
+import { Providers } from "./providers";
 
 const dmSans = DM_Sans({
   variable: "--font-dmSans",
@@ -41,11 +42,13 @@ export default async function RootLayout({
         className="relative"
       >
         <GlobalScripts />
-        <Header headerMenu={headerMenu} />
-        <main className="relative min-h-screen w-full font-sans">
-          {children}
-        </main>
-        <Footer />
+        <Providers>
+          <Header headerMenu={headerMenu} />
+            <main className="relative min-h-screen w-full font-sans">
+                {children}
+            </main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
