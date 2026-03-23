@@ -100,7 +100,7 @@ export const CatalogGridWrapper = () => {
         return (
             <section className="section-container">
                 <h2 className="mb-2.5">Looks like something went wrong...</h2>
-                <Link href="/catalog" className="button-outline">Refresh the page</Link>
+                <button type="button" className="button-outline mt-5" onClick={() => {window.location.reload(); }}>Refresh the page</button>
             </section>
         );
     }
