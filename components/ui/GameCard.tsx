@@ -10,6 +10,7 @@ type GameCardProps = {
 
 export const GameCard = ({ gameData }: GameCardProps) => {
     const {
+        id,
         slug,
         name,
         background_image,
@@ -19,13 +20,27 @@ export const GameCard = ({ gameData }: GameCardProps) => {
         <article className="bg-slate-900 border border-solid border-app-border rounded-lg h-full flex flex-col relative">
             {background_image && (
                 <div className="game-card-image-container aspect-video relative rounded-t-lg">
-                    <Image src={background_image} alt="" fill className="object-cover rounded-t-lg"></Image>
+                    <Image 
+                        src={background_image} 
+                        alt="" 
+                        width={1000} 
+                        height={300} 
+                        className="aspect-video rounded-t-lg"
+                        sizes="100vw, (min-width: 768px) 500px"
+                    ></Image>
                 </div>
             )}
             <div className="game-card-content p-5 h-full flex flex-col gap-2.5">
                 <div className="flex flex-row justify-between items-center">
                     <StoreIcons stores={stores} />
-                    <FavoriteButton name={name} slug={slug} />
+                    <FavoriteButton
+                        game={{
+                            id,
+                            slug,
+                            name,
+                            background_image,
+                        }}
+                    />
                 </div>
                 <h3>{name}</h3>
                 <Link className="mt-auto button-outline" href={`/catalog/${slug}`} aria-label={`View details for ${name}`}>

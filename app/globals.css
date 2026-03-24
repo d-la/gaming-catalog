@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source inline("{hover:,focus:,focus-within:,group-hover:,group-focus:,group-focus-within:}{fill-pink-300,stroke-pink-300}");
 
 :root {
   --background: #ffffff;
@@ -18,21 +19,6 @@
   --font-body: var(--font-dmsans);
   --color-background-gradient-dark: var(--background-graient-dark);
   --color-background-gradient-darker: var(--background-graient-darker);
-}
-
-@safelist {
-  hover:fill-pink-300;
-  hover:stroke-pink-300;
-  focus:fill-pink-300;
-  focus:stroke-pink-300;
-  focus-within:fill-pink-300;
-  focus-within:stroke-pink-300;
-  group-hover:fill-pink-300;
-  group-hover:stroke-pink-300;
-  group-focus:fill-pink-300;
-  group-focus:stroke-pink-300;
-  group-focus-within:fill-pink-300;
-  group-focus-within:stroke-pink-300;
 }
 
 @layer base {
