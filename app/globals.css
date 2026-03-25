@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source inline("{hover:,focus:,focus-within:,group-hover:,group-focus:,group-focus-within:}{fill-pink-300,stroke-pink-300}");
 
 :root {
   --background: #ffffff;
