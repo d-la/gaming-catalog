@@ -8,15 +8,14 @@ import { CatalogFilters } from "./CatalogFilters";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { fetchGames } from "@/lib/fetchGames";
-import Link from "next/link";
 
 export const CatalogGridWrapper = () => {
     const [games, setGames] = useState<RawgGame[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [hasMore, setHasMore] = useState<boolean>(true);
     const currentPage = useRef(0);
     const currentStores = useRef('');
+    const isFetching = useRef(false);
     
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -24,23 +23,25 @@ export const CatalogGridWrapper = () => {
     const observerRef = useRef<HTMLDivElement | null>(null);
 
     const loadGamesUpToPage = async (targetPage: number, stores: string) => {
-        const allGames = [];
+        const allGames: RawgGame[] = [];
         let next: string | undefined | null = undefined;
 
-        for (let p = 1; p <= targetPage; p++) {
+        const startPage = currentPage.current + 1
+
+        for (let p = startPage; p <= targetPage; p++) {
             const data = await fetchGames(p.toString(), stores);
             allGames.push(...data.results);
             next = data.next;
         }
 
-        setGames(allGames);
+        if (allGames.length > 0) {
+            setGames(prev => [...prev, ...allGames]);
+        }
 
         return next;
     }
 
     const getGames = useCallback(async () => {
-        setIsLoading(true);
-
         const page = searchParams.get("page") ?? 1;
         const stores = searchParams.get("stores") ?? '';
 
@@ -48,10 +49,13 @@ export const CatalogGridWrapper = () => {
         if (currentStores.current !== stores) {
             currentPage.current = 0;
             currentStores.current = stores;
+            setGames([]);
         }
 
         // Conditional to prevent fetching the same page multiple times
-        if (Number(page) > Number(currentPage.current)) {
+        if (Number(page) > Number(currentPage.current) && !isFetching.current) {
+            isFetching.current = true;
+
             try {
                 // Load all games up to the current page from the query string
                 const data = await loadGamesUpToPage(Number(page), stores);
@@ -63,10 +67,10 @@ export const CatalogGridWrapper = () => {
             } catch (error) {
                 console.error(error);
                 setError(error instanceof Error ? error.message : "Sorry - something went wrong.");
+            } finally {
+                isFetching.current = false
             }
         }
-
-        setIsLoading(false);
     }, [searchParams]);
 
     useEffect(() => {
@@ -78,7 +82,7 @@ export const CatalogGridWrapper = () => {
         if (!observerRef.current || !hasMore) return;
 
         const observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting && !isLoading) {
+            if (entries[0].isIntersecting && !isFetching.current) {
                 const nextPage = (Number(searchParams.get("page")) || 1) + 1;
                 const params = new URLSearchParams(searchParams.toString());
 
@@ -94,7 +98,7 @@ export const CatalogGridWrapper = () => {
         observer.observe(observerRef.current);
 
         return () => observer.disconnect();
-    }, [hasMore, isLoading, router, searchParams]);
+    }, [hasMore, router, searchParams]);
 
     if (error) {
         return (
@@ -109,7 +113,7 @@ export const CatalogGridWrapper = () => {
         <>
             <CatalogFilters />
             <CatalogGrid games={games} />
-            {isLoading && <CatalogSkeleton />}
+            {!isFetching.current && <CatalogSkeleton />}
             <div className="observer w-full h-64" ref={observerRef}></div>
         </>
     )
