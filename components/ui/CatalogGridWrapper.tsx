@@ -16,6 +16,8 @@ export const CatalogGridWrapper = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const currentPage = useRef(0);
     const isFetching = useRef(false);
+
+    const maxPagesBeforeLoadButton = 3;
     
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -80,18 +82,27 @@ export const CatalogGridWrapper = () => {
         getGames()
     }, [getGames]);
 
+    const setQueryParams = () => {
+        const nextPage = (Number(searchParams.get("page")) || 1) + 1;
+        const params = new URLSearchParams(searchParams.toString());
+
+        params.set("page", nextPage.toString());
+
+        router.push(`?${params.toString()}`, { scroll: false });
+    }
+
     // Infinite load more games as the user hits our ref div
     useEffect(() => {
         if (!observerRef.current || !hasMore) return;
 
         const observer = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting && !isFetching.current) {
-                const nextPage = (Number(searchParams.get("page")) || 1) + 1;
-                const params = new URLSearchParams(searchParams.toString());
+                setQueryParams();
+            }
 
-                params.set("page", nextPage.toString());
-
-                router.push(`?${params.toString()}`, { scroll: false });
+            // After 2 pages stop observing the observer and show a load more button
+            if (currentPage.current > maxPagesBeforeLoadButton) {
+                observer.unobserve(observerRef.current as Element);
             }
         },
         {
@@ -101,7 +112,7 @@ export const CatalogGridWrapper = () => {
         observer.observe(observerRef.current);
 
         return () => observer.disconnect();
-    }, [hasMore, router, searchParams]);
+    }, [hasMore, router, searchParams]); // Lint warning on not including setQueryParams as dependency: purposefully ignoring it as that function does not need to be recached as query params change, which is frequently if the user is scrolling through the page
 
     if (error) {
         return (
@@ -117,7 +128,12 @@ export const CatalogGridWrapper = () => {
             <CatalogFilters />
             <CatalogGrid games={games} />
             {isLoading && <CatalogSkeleton />}
-            <div className="observer w-full h-64" ref={observerRef}></div>
+            <div className={`observer w-full ${currentPage.current > maxPagesBeforeLoadButton ? "h-0" : "h-64"}`} ref={observerRef}></div>
+            {currentPage.current > maxPagesBeforeLoadButton && (
+                <div className="load-more-container flex justify-center items-center py-7.5">
+                    <button className="button-outline cursor-pointer" onClick={setQueryParams}>Load more games</button>
+                </div>
+            )}
         </>
     )
 
