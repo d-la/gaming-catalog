@@ -13,12 +13,14 @@ export const CatalogGridWrapper = () => {
     const [games, setGames] = useState<RawgGame[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [hasMore, setHasMore] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const currentPage = useRef(0);
-    const currentStores = useRef('');
     const isFetching = useRef(false);
     
     const router = useRouter();
     const searchParams = useSearchParams();
+
+    const stores = searchParams.get("stores") ?? "";
 
     const observerRef = useRef<HTMLDivElement | null>(null);
 
@@ -26,7 +28,7 @@ export const CatalogGridWrapper = () => {
         const allGames: RawgGame[] = [];
         let next: string | undefined | null = undefined;
 
-        const startPage = currentPage.current + 1
+        const startPage = currentPage.current + 1;
 
         for (let p = startPage; p <= targetPage; p++) {
             const data = await fetchGames(p.toString(), stores);
@@ -41,36 +43,37 @@ export const CatalogGridWrapper = () => {
         return next;
     }
 
+    // Track changes to store and reset our games/currentPage whenever stores changes
+    useEffect(() => {
+        setGames([]);
+        currentPage.current = 0;
+    }, [stores]);
+
     const getGames = useCallback(async () => {
+        if (isFetching.current) return;
+
+        isFetching.current = true;
+        setIsLoading(true);
+
         const page = searchParams.get("page") ?? 1;
         const stores = searchParams.get("stores") ?? '';
 
-        // If the user has filtered, change our ref so we can load new games properly
-        if (currentStores.current !== stores) {
-            currentPage.current = 0;
-            currentStores.current = stores;
-            setGames([]);
+        try {
+            // Load all games up to the current page from the query string
+            const data = await loadGamesUpToPage(Number(page), stores);
+
+            setHasMore(Boolean(data));
+            
+            // Set our ref to the current page so we can continue infinite loading as needed
+            currentPage.current = Number(page);
+        } catch (error) {
+            console.error(error);
+            setError(error instanceof Error ? error.message : "Sorry - something went wrong.");
+        } finally {
+            isFetching.current = false;
         }
 
-        // Conditional to prevent fetching the same page multiple times
-        if (Number(page) > Number(currentPage.current) && !isFetching.current) {
-            isFetching.current = true;
-
-            try {
-                // Load all games up to the current page from the query string
-                const data = await loadGamesUpToPage(Number(page), stores);
-
-                setHasMore(Boolean(data));
-
-                // Set our ref to the current page so we can continue infinite loading as needed
-                currentPage.current = Number(page);
-            } catch (error) {
-                console.error(error);
-                setError(error instanceof Error ? error.message : "Sorry - something went wrong.");
-            } finally {
-                isFetching.current = false
-            }
-        }
+        setIsLoading(false);
     }, [searchParams]);
 
     useEffect(() => {
@@ -103,7 +106,7 @@ export const CatalogGridWrapper = () => {
     if (error) {
         return (
             <section className="section-container">
-                <h2 className="mb-2.5">Looks like something went wrong...</h2>
+                <h2 className="mb-2.5">Sorry, looks like something went wrong...</h2>
                 <button type="button" className="button-outline mt-5" onClick={() => {window.location.reload(); }}>Refresh the page</button>
             </section>
         );
@@ -113,7 +116,7 @@ export const CatalogGridWrapper = () => {
         <>
             <CatalogFilters />
             <CatalogGrid games={games} />
-            {!isFetching.current && <CatalogSkeleton />}
+            {isLoading && <CatalogSkeleton />}
             <div className="observer w-full h-64" ref={observerRef}></div>
         </>
     )
