@@ -20,7 +20,7 @@ export default function Error({
             </section>
             <section className="section-container">
                 <h2>Looks like something went wrong...</h2>
-                <button onClick={() => reset()}>Try again</button>
+                <button onClick={() => reset()} className="button-outline mt-5 cursor-pointer">Try again</button>
             </section>
         </>
     )

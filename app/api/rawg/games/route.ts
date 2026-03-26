@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
         page
     });
 
-    if (stores) query.append("stores", stores);
+    if (stores && stores !== "-1") query.append("stores", stores);
     if (tags) query.append("tags", tags);
 
     const res = await fetch(`https://api.rawg.io/api/games?${query.toString()}`);
