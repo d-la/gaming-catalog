@@ -18,6 +18,8 @@ export const MobileSidebarNav = ({
     isLoggedIn,
 }: MobileSidebarNavProps) => {
     useEffect(() => {
+        if (!isOpen) return;
+
         const handleClick = (e: MouseEvent) => {
             const target = e.target;
 
@@ -25,10 +27,7 @@ export const MobileSidebarNav = ({
                 return;
             }
 
-            if (
-                !target.closest(".mobile-sidebar-nav") &&
-                isOpen
-            ) {
+            if (!target.closest(".mobile-sidebar-nav")) {
                 closeSidebar();
             }
         };
