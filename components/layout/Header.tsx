@@ -22,11 +22,12 @@ export const Header = ({ headerMenu }: HeaderProps) => {
         toggleSidebar={() => setIsMobileSidebarOpen(prev => !prev)}
         isLoggedIn={isLoggedIn}
         username={session?.user?.name || null}
+        closeSidebar={() => setIsMobileSidebarOpen(false)}
       />
       <MobileSidebarNav
         headerMenu={headerMenu}
         isOpen={isMobileSidebarOpen}
-        onClose={() => setIsMobileSidebarOpen(false)}
+        closeSidebar={() => setIsMobileSidebarOpen(false)}
         isLoggedIn={isLoggedIn}
       />
     </header>

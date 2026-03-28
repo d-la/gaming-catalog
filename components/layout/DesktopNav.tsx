@@ -9,6 +9,7 @@ interface DesktopNavProps {
     toggleSidebar: () => void;
     isLoggedIn: boolean;
     username: string | null;
+    closeSidebar: () => void;
 }
 
 export const DesktopNav = ({
@@ -16,6 +17,7 @@ export const DesktopNav = ({
     toggleSidebar,
     isLoggedIn,
     username,
+    closeSidebar
 }: DesktopNavProps) => {
     return (
         <div className="flex flex-row justify-between items-center section-container py-0">
@@ -37,7 +39,7 @@ export const DesktopNav = ({
                             <Link
                                 className="header-navbar__link transition-all duration-300 hover:color-slate-200 focus:color-slate-200 focus-within:color-slate-200"
                                 href={item.href}
-                                target={item.openInNewTab ? "_blank" : "_self"}
+                                onClick={closeSidebar}
                             >
                                 {item.label}
                             </Link>
@@ -48,6 +50,7 @@ export const DesktopNav = ({
                             <Link
                                 href={"/favorites"}
                                 className="header-navbar__link transition-all duration-300 hover:color-slate-200 focus:color-slate-200 focus-within:color-slate-200"
+                                onClick={closeSidebar}
                             >
                                 Favorites
                             </Link>
@@ -57,7 +60,7 @@ export const DesktopNav = ({
                 <button
                     type="button"
                     aria-label="Toggle mobile sidebar nav"
-                    className="block md:hidden"
+                    className="mobile-nav-toggle block md:hidden"
                     onClick={toggleSidebar}
                 >
                     <svg
