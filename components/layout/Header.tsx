@@ -28,7 +28,6 @@ export const Header = ({ headerMenu }: HeaderProps) => {
         isOpen={isMobileSidebarOpen}
         onClose={() => setIsMobileSidebarOpen(false)}
         isLoggedIn={isLoggedIn}
-        username={session?.user?.name || null}
       />
     </header>
   )

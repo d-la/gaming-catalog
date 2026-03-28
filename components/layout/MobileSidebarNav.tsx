@@ -1,18 +1,32 @@
-import clsx from "clsx";
+"use client";
+
 import type { Menu } from "@/types/menu";
+import { useEffect } from "react";
 import Link from "next/link";
-import { LogInButton } from "../ui/LogInButton";
-import { AccountInformationButton } from "../ui/AccountInformationButton";
 
 interface MobileSidebarNavProps {
     headerMenu: Menu | null;
     isOpen: boolean
     onClose: () => void
     isLoggedIn: boolean
-    username: string | null
 }
 
-export const MobileSidebarNav = ({ headerMenu, isOpen, onClose, isLoggedIn, username }: MobileSidebarNavProps) => {
+export const MobileSidebarNav = ({ headerMenu, isOpen, onClose, isLoggedIn }: MobileSidebarNavProps) => {
+    
+    useEffect(() => {
+        const handleClick = (e: MouseEvent) => {
+            if (!(e.target as Element).closest('.mobile-sidebar-nav') && isOpen) {
+                onClose();
+            }
+        };
+
+        document.addEventListener('click', handleClick);
+
+        return () => {
+            document.removeEventListener('click', handleClick);
+        };
+    }, [isOpen, onClose]);
+
     return (
         <aside className={`mobile-sidebar-nav absolute block md:hidden dark:bg-slate-900 transition-all duration-300 ease-in-out h-screen top-[81px] min-w-7/10 ${isOpen ? "left-0 z-10" : "-left-full -z-1"}`}>
             <div className="mobile-sidebar-header w-full p-5 flex justify-end">
@@ -38,16 +52,6 @@ export const MobileSidebarNav = ({ headerMenu, isOpen, onClose, isLoggedIn, user
                         >
                             Favorites
                         </Link>
-                    </li>
-                )}
-                {!isLoggedIn && (
-                    <li className="mt-10">
-                        <LogInButton />
-                    </li>
-                )}
-                {isLoggedIn && username && (
-                    <li className="mt-10">
-                        <AccountInformationButton username={username} />
                     </li>
                 )}
             </ul>
