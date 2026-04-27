@@ -5,136 +5,158 @@ import CatalogGrid from "./CatalogGrid";
 import { RawgGame } from "@/types/rawg/game";
 import CatalogSkeleton from "../skeletons/CatalogSkeleton";
 import { CatalogFilters } from "./CatalogFilters";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { fetchGames } from "@/lib/fetchGames";
+
+const MAX_PAGES_BEFORE_LOAD_BUTTON = 5;
+
+// Derive a stable string key from all filter-type params (everything except "page").
+// Adding a new filter (e.g. "genre") requires zero changes here.
+function getFilterKey(searchParams: URLSearchParams): string {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("page");
+    params.sort();
+    return params.toString();
+}
 
 export const CatalogGridWrapper = () => {
     const [games, setGames] = useState<RawgGame[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [hasMore, setHasMore] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const currentPage = useRef(0);
-    const isFetching = useRef(false);
 
-    const maxPagesBeforeLoadButton = 3;
-    
+    const isFetching = useRef(false);
+    // Tracks the highest page already rendered in the grid so we only fetch the delta.
+    // Reset to 0 whenever filters change.
+    const loadedUpTo = useRef(0);
+    const observerRef = useRef<HTMLDivElement | null>(null);
+
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const stores = searchParams.get("stores") ?? "";
+    const currentPage = Number(searchParams.get("page") || 1);
+    const filterKey = getFilterKey(searchParams);
 
-    const observerRef = useRef<HTMLDivElement | null>(null);
+    useEffect(() => {
+        const controller = new AbortController();
+        const { signal } = controller;
 
-    const loadGamesUpToPage = async (targetPage: number, stores: string) => {
-        const allGames: RawgGame[] = [];
-        let next: string | undefined | null = undefined;
+        const syncGames = async () => {
+            isFetching.current = true;
+            setIsLoading(true);
+            setError(null);
 
-        const startPage = currentPage.current + 1;
+            const stores = searchParams.get("stores") ?? "";
 
-        for (let p = startPage; p <= targetPage; p++) {
-            const data = await fetchGames(p.toString(), stores);
-            allGames.push(...data.results);
-            next = data.next;
-        }
+            try {
+                // If loadedUpTo is ahead of or equal to currentPage, the grid is
+                // already showing everything we need — nothing to fetch.
+                if (loadedUpTo.current >= currentPage) return;
 
-        if (allGames.length > 0) {
-            setGames(prev => [...prev, ...allGames]);
-        }
+                const startPage = loadedUpTo.current + 1;
+                const newGames: RawgGame[] = [];
+                let next: string | null | undefined;
 
-        return next;
-    }
+                for (let p = startPage; p <= currentPage; p++) {
+                    if (signal.aborted) return;
 
-    // Track changes to store and reset our games/currentPage whenever stores changes
+                    const data = await fetchGames(p.toString(), stores);
+                    newGames.push(...data.results);
+                    next = data.next;
+                }
+
+                if (signal.aborted) return;
+
+                // Append only the new pages — existing games stay in the grid.
+                setGames(prev => [...prev, ...newGames]);
+                setHasMore(Boolean(next));
+                loadedUpTo.current = currentPage;
+            } catch (err) {
+                if (!signal.aborted) {
+                    console.error(err);
+                    setError(err instanceof Error ? err.message : "Sorry - something went wrong.");
+                }
+            } finally {
+                if (!signal.aborted) {
+                    isFetching.current = false;
+                    setIsLoading(false);
+                }
+            }
+        };
+
+        syncGames();
+
+        return () => controller.abort();
+
+    // filterKey changing means filters changed — see below effect for the reset.
+    // currentPage changing means the user scrolled or clicked load more.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentPage, filterKey]);
+
+    // When filters change, reset the grid and loadedUpTo so syncGames fetches
+    // from page 1 again. Kept as a separate effect so the reset is atomic
+    // and runs before the fetch effect picks up the new filterKey.
     useEffect(() => {
         setGames([]);
-        currentPage.current = 0;
-    }, [stores]);
+        loadedUpTo.current = 0;
+    }, [filterKey]);
 
-    const getGames = useCallback(async () => {
+    const advancePage = useCallback(() => {
         if (isFetching.current) return;
 
-        isFetching.current = true;
-        setIsLoading(true);
-
-        const page = searchParams.get("page") ?? 1;
-        const stores = searchParams.get("stores") ?? '';
-
-        try {
-            // Load all games up to the current page from the query string
-            const data = await loadGamesUpToPage(Number(page), stores);
-
-            setHasMore(Boolean(data));
-            
-            // Set our ref to the current page so we can continue infinite loading as needed
-            currentPage.current = Number(page);
-        } catch (error) {
-            console.error(error);
-            setError(error instanceof Error ? error.message : "Sorry - something went wrong.");
-        } finally {
-            isFetching.current = false;
-        }
-
-        setIsLoading(false);
-    }, [searchParams]);
-
-    useEffect(() => {
-        getGames()
-    }, [getGames]);
-
-    const setQueryParams = () => {
-        const nextPage = (Number(searchParams.get("page")) || 1) + 1;
         const params = new URLSearchParams(searchParams.toString());
-
-        params.set("page", nextPage.toString());
-
+        params.set("page", (currentPage + 1).toString());
         router.push(`?${params.toString()}`, { scroll: false });
-    }
+    }, [searchParams, currentPage, router]);
 
-    // Infinite load more games as the user hits our ref div
+    // Intersection observer — only attaches when we're still in auto-scroll range.
     useEffect(() => {
-        if (!observerRef.current || !hasMore) return;
+        const sentinel = observerRef.current;
+        if (!sentinel || !hasMore || currentPage >= MAX_PAGES_BEFORE_LOAD_BUTTON) return;
 
-        const observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting && !isFetching.current) {
-                setQueryParams();
-            }
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting && !isFetching.current) {
+                    advancePage();
+                }
+            },
+            { rootMargin: "0px 0px 400px 0px", threshold: 0 }
+        );
 
-            // After 2 pages stop observing the observer and show a load more button
-            if (currentPage.current > maxPagesBeforeLoadButton) {
-                observer.unobserve(observerRef.current as Element);
-            }
-        },
-        {
-            rootMargin: "0px 0px 400px 0px", threshold: 0
-        });
-
-        observer.observe(observerRef.current);
-
+        observer.observe(sentinel);
         return () => observer.disconnect();
-    }, [hasMore, router, searchParams]); // Lint warning on not including setQueryParams as dependency: purposefully ignoring it as that function does not need to be recached as query params change, which is frequently if the user is scrolling through the page
+    }, [hasMore, currentPage, advancePage]);
 
     if (error) {
         return (
             <section className="section-container">
                 <h2 className="mb-2.5">Sorry, looks like something went wrong...</h2>
-                <button type="button" className="button-outline mt-5" onClick={() => {window.location.reload(); }}>Refresh the page</button>
+                <button
+                    type="button"
+                    className="button-outline mt-5"
+                    onClick={() => window.location.reload()}
+                >
+                    Refresh the page
+                </button>
             </section>
         );
     }
+
+    const showLoadMoreButton = currentPage >= MAX_PAGES_BEFORE_LOAD_BUTTON && hasMore;
 
     return (
         <>
             <CatalogFilters />
             <CatalogGrid games={games} />
             {isLoading && <CatalogSkeleton />}
-            <div className={`observer w-full ${currentPage.current > maxPagesBeforeLoadButton ? "h-0" : "h-64"}`} ref={observerRef}></div>
-            {currentPage.current > maxPagesBeforeLoadButton && (
+            <div ref={observerRef} className={`w-full ${showLoadMoreButton ? 'h-0' : 'h-64'}`} />
+            {showLoadMoreButton && (
                 <div className="load-more-container flex justify-center items-center py-7.5">
-                    <button className="button-outline cursor-pointer" onClick={setQueryParams}>Load more games</button>
+                    <button className="button-outline cursor-pointer" onClick={advancePage}>
+                        Load more games
+                    </button>
                 </div>
             )}
         </>
-    )
-
-}
+    );
+};
